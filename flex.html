@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html style="height: 100%; width: 100%;">
+  <head>
+<style>
+.title {
+  color: white;
+}
+.layout {
+  background: gray;
+  color: white;
+  display: flex;
+  height: 8em;
+  width: 8em;
+}
+</style>
+  </head>
+  <body style="height: 100%; width: 100%; margin: 0; background: black;">
+    <div id="flex"></div>
+<script>
+const flexEl = document.getElementById('flex')
+
+const flex = {
+  'flex-direction': ['row', 'row-reverse', 'column', 'column-reverse'],
+  'justify-content': ['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly'],
+  'align-items': ['flex-start', 'flex-end', 'center', 'baseline', 'stretch']
+}
+
+flex['flex-direction'].forEach(fd => {
+  flex['justify-content'].forEach(jc => {
+    flex['align-items'].forEach(ai => {
+      const el = document.createElement('div')
+      const titleEl = document.createElement('div')
+      titleEl.classList.add('title')
+      titleEl.innerText = 'flex-direction: ' + fd + ', justify-content: ' + jc + ', align-items: ' + ai
+      el.appendChild(titleEl)
+      const layoutEl = document.createElement('div')
+      layoutEl.classList.add('layout')
+      Array.from({ length: 3 }).forEach((_, i) => {
+        const item = document.createElement('div')
+        item.innerText = i + 1
+        layoutEl.appendChild(item)
+      })
+      layoutEl.style.flexDirection = fd
+      layoutEl.style.justifyContent = jc
+      layoutEl.style.alignItems = ai
+      el.appendChild(layoutEl)
+      flexEl.appendChild(el)
+    })
+  })
+});
+</script>
+  </body>
+</html>
