@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html style="height: 100%; width: 100%;">
+  <head>
+<style>
+.box {
+  background: black;
+  color: white;
+  height: 15em;
+  width: 15em;
+}
+.even {
+  background: gray;
+}
+</style>
+  </head>
+  <body style="height: 100%; width: 100%; margin: 0;">
+    <div>
+      <div class="box"></div>
+      <div class="even box"></div>
+      <div class="box"></div>
+      <div class="even box"></div>
+      <div class="box"></div>
+      <div class="even box"></div>
+    </div>
+<script>
+document.querySelectorAll('.box').forEach(box => {
+  box.addEventListener('mousemove', (event) => {
+    box.innerHTML = 'clientX: ' + event.clientX
+      + ', screenX: ' + event.screenX
+      + ', pageX: ' + event.pageX
+      + ', clientY: ' + event.clientY
+      + ', screenY: ' + event.screenY
+      + ', pageY: ' + event.pageY
+  })
+})
+</script>
+  </body>
+</html>
