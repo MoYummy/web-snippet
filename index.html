@@ -1,1 +1,49 @@
-<!DOCTYPE html><html><body>Web Snippet</body></html>
+<!DOCTYPE html>
+<html>
+  <head>
+<style>
+.list { display: flex; flex-direction: column; }
+</style>
+  </head>
+  <body>
+    <button onclick="fetchData()">Fetch</button>
+    <div id=app></div>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.min.js"></script>
+<script>
+const vm = new Vue({
+  el: '#app',
+  template: `<div><div>{{d}}</div><div class="list"><a v-for="(f, i) of l" :key="i" :href="f">{{f}}</a></div></div>`,
+  computed: {
+    ls () {
+      const repo = location.pathname.split('/')[1]
+      return JSON.parse(localStorage.getItem(repo))
+    },
+    l () {
+      return (this.ls || { list: [] }).list
+    },
+    d () {
+      return (this.ls || {}).timestamp
+    }
+  }
+})
+
+const url = (owner, repo) => 'https://api.github.com/repos/' + owner + '/' + repo + '/git/trees/master'
+
+function fetchData () {  
+  const owner = location.origin.split('/').pop().split('.').shift()
+  const repo = location.pathname.split('/')[1]
+  fetch(url(owner, repo)).then(resp => {
+    return resp.json()
+  }).then(resp => {
+    const old = JSON.parse(localStorage.getItem(repo))
+    const ls = {
+      timestamp: new Date(),
+      list: resp.tree.map(x => x.path).filter(x => /\.html$/.test(x))
+    }
+    localStorage.setItem(repo, JSON.stringify(Object.assign({}, old, ls)))
+    location.reload()
+  })
+}
+</script>
+  </body>
+</html>
